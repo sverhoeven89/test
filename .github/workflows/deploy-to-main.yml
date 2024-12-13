@@ -24,17 +24,27 @@ jobs:
           git config --local user.name "GitHub Actions"
           git config --local user.email "actions@github.com"
           
-          # Voeg alle bestanden toe, behalve de workflow-bestanden
+          # Voeg alle bestanden toe
           git add .  # Dit voegt alle gewijzigde bestanden toe
-          
-          # Verwijder deploy-to-main.yml bestand uit de staging area (doe dit na git add)
-          git reset .github/workflows/deploy-to-main.yml
           
           # Commit de wijzigingen
           git commit -m "Replace alpha_dev with alpha_prod" || echo "No changes to commit"
 
-      - name: Push changes to main
+      - name: Create a new branch
         run: |
-          git push origin main
+          git checkout -b update-alpha
+
+      - name: Push changes to the new branch
+        run: |
+          git push origin update-alpha
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create a pull request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: update-alpha  # De branch met wijzigingen
+          base: main            # De doelbranch
+          title: "Replace alpha_dev with alpha_prod"
+          body: "Automatisch gegenereerde pull request om alpha_dev te vervangen door alpha_prod."
