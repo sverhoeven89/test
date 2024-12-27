@@ -1,0 +1,9 @@
+{
+	"name": "df-svdp",
+	"location": "westeurope",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "949c0b47-b909-49a9-9a74-8c57d16eaa43",
+		"tenantId": "25145864-d5c5-46ef-b665-1e30158ed360"
+	}
+}
